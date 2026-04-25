@@ -1,0 +1,121 @@
+# coding-progress
+
+一个本地部署的刷题题单与进度管理页面。题单数据来自 TypeScript 数据文件，刷题进度保存在浏览器本地存储中，并支持 JSON 导入导出。
+
+## 开发命令
+
+```bash
+npm install
+npm run dev
+npm test
+npm run build
+```
+
+## 如何创建一个题单
+
+题单由两部分组成：一个数据文件，以及一次配置注册。
+
+1. 在 `components/containers/List/data` 下新增一个题单数据文件，例如 `two_pointers.ts`。
+
+```ts
+export default {
+  title: "双指针",
+  summary: "题单介绍，可以写 Markdown、表格、代码块和 $LaTeX$ 公式。",
+  src: "",
+  original_src: "https://leetcode.cn/circle/discuss/xxx",
+  sort: 0,
+  isLeaf: false,
+  solution: "",
+  score: 0,
+  leafChild: [],
+  nonLeafChild: [
+    {
+      title: "一、相向双指针",
+      summary: "",
+      src: "",
+      original_src: "",
+      sort: 0,
+      isLeaf: false,
+      solution: "",
+      score: 0,
+      leafChild: [],
+      nonLeafChild: [],
+      isPremium: false,
+      last_update: "",
+    },
+  ],
+  isPremium: false,
+  last_update: "2026-04-26",
+};
+```
+
+2. 在 `config/studyPlans.ts` 中导入并注册这个题单。
+
+```ts
+import twoPointers from "@components/containers/List/data/two_pointers";
+
+export const studyPlans = {
+  // ...
+  two_pointers: {
+    title: "双指针",
+    href: "/list/two_pointers",
+    data: twoPointers,
+  },
+} as const;
+```
+
+注册后页面地址就是 `/list/two_pointers`。`app/list/[slug]/page.tsx` 会从 `studyPlans` 自动生成静态路由，不需要再单独添加页面文件。
+
+## 如何添加题单中的题目
+
+题目放在某个分类节点的 `leafChild` 数组中。分类节点可以继续通过 `nonLeafChild` 嵌套子分类。
+
+```ts
+{
+  title: "§1.1 基础",
+  summary: "这里可以写本小节说明。",
+  src: "",
+  original_src: "",
+  sort: 0,
+  isLeaf: false,
+  solution: "",
+  score: 0,
+  leafChild: [
+    {
+      title: "167. 两数之和 II - 输入有序数组",
+      summary: "",
+      src: "/two-sum-ii-input-array-is-sorted/",
+      original_src: "https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/",
+      sort: 0,
+      isLeaf: true,
+      solution: null,
+      score: 1300,
+      leafChild: [],
+      nonLeafChild: [],
+      isPremium: false,
+      last_update: "",
+    },
+  ],
+  nonLeafChild: [],
+  isPremium: false,
+  last_update: "",
+}
+```
+
+字段约定：
+
+- `title`：展示标题。题目建议使用 `题号. 中文标题`，本地进度会优先用题号做 key。
+- `summary`：说明文本，支持 Markdown、HTML、表格、代码块、行内公式 `$...$` 和块级公式 `$$...$$`。
+- `src`：LeetCode 题目路径，例如 `/two-sum/`，用于站内样式的题目链接。
+- `original_src`：完整原始链接。
+- `score`：难度分，没有可以填 `null`。
+- `isPremium`：是否会员题。
+- `leafChild`：当前分类下的题目。
+- `nonLeafChild`：当前分类下的子分类。
+
+修改数据后建议运行：
+
+```bash
+npm test
+npm run build
+```
