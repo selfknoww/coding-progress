@@ -25,6 +25,22 @@ test("renders fenced code blocks from v0 summaries", () => {
   assert.doesNotMatch(html, /```/);
 });
 
+test("restores indentation for flattened v0 python code blocks", () => {
+  const normalized = normalizeV0Summary(
+    "```py [sol-Python3]<br>def solve(n: int, edges: List[List[int]]) -> List[int]:<br>g = [[] for _ in range(n)]<br>for x, y in edges:<br>g[x].append(y)<br>g[y].append(x)  # 无向图<br>vis = [False] * n<br>def dfs(x: int) -> int:<br>vis[x] = True<br>size = 1<br>for y in g[x]:<br>if not vis[y]:<br>size += dfs(y)<br>return size<br>ans = []<br>for i, b in enumerate(vis):<br>if not b:<br>size = dfs(i)<br>ans.append(size)<br>return ans<br>```"
+  );
+
+  assert.match(normalized, /\n    g = \[\[\] for _ in range\(n\)\]/);
+  assert.match(normalized, /\n        g\[x\]\.append\(y\)/);
+  assert.match(normalized, /\n    vis = \[False\] \* n/);
+  assert.match(normalized, /\n    def dfs\(x: int\) -> int:/);
+  assert.match(normalized, /\n        for y in g\[x\]:/);
+  assert.match(normalized, /\n                size \+= dfs\(y\)/);
+  assert.match(normalized, /\n        return size/);
+  assert.match(normalized, /\n    ans = \[\]/);
+  assert.match(normalized, /\n    return ans/);
+});
+
 test("wraps orphan v0 code fragments that only contain the closing fence", () => {
   const html = renderSummaryHtml("def logTrick(nums: List[int]) -> None:<br>print(nums)<br>```<br>```java [sol-Java]<br>class Solution {}<br>```");
 
