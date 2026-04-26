@@ -151,80 +151,6 @@ a:hover {
   gap: 0.85rem;
 }
 
-.study-plan-switcher {
-  position: static;
-  z-index: 1020;
-  display: flex;
-  justify-content: flex-start;
-  gap: 0.6rem;
-  align-items: center;
-  padding: 0.75rem 1rem 0;
-  pointer-events: auto;
-}
-
-.study-plan-switcher-label {
-  color: var(--bs-secondary-color);
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.study-plan-switcher details {
-  position: relative;
-  pointer-events: auto;
-}
-
-.study-plan-switcher summary {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  justify-content: space-between;
-  min-width: 11rem;
-  padding: 0.45rem 0.7rem;
-  border: 1px solid var(--bs-border-color);
-  border-radius: 0.5rem;
-  background: var(--bs-body-bg);
-  color: var(--bs-body-color);
-  cursor: pointer;
-  font-weight: 750;
-  list-style: none;
-}
-
-.study-plan-switcher summary::-webkit-details-marker {
-  display: none;
-}
-
-.study-plan-switcher summary::after {
-  content: "▾";
-  color: var(--bs-secondary-color);
-}
-
-.study-plan-switcher-menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 0.4rem);
-  display: grid;
-  min-width: 13rem;
-  max-height: 22rem;
-  overflow-y: auto;
-  padding: 0.35rem;
-  border: 1px solid var(--bs-border-color);
-  border-radius: 0.6rem;
-  background: var(--bs-body-bg);
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.24);
-}
-
-.study-plan-switcher-menu a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.45rem 0.55rem;
-  border-radius: 0.4rem;
-  color: var(--bs-body-color);
-  font-weight: 650;
-  text-decoration: none;
-}
-
 .progress-badge {
   display: inline-flex;
   align-items: center;
@@ -258,12 +184,6 @@ a:hover {
   inset: 0 auto 0 0;
   border-radius: inherit;
   background: linear-gradient(90deg, #22c55e, #84cc16);
-}
-
-.study-plan-switcher-menu a:hover,
-.study-plan-switcher-menu a.active {
-  background: var(--bs-secondary-bg);
-  color: var(--bs-primary);
 }
 
 .progress-tools {
@@ -329,12 +249,6 @@ a:hover {
       rgb(26, 28, 31);
   }
 
-  .study-plan-switcher summary,
-  .study-plan-switcher-menu {
-    background: rgb(17, 24, 39);
-    border-color: rgba(148, 163, 184, 0.28);
-  }
-
   .progress-tools .alert {
     border-color: var(--bs-border-color);
   }
@@ -354,9 +268,4 @@ a:hover {
     justify-content: flex-start;
   }
 
-  .study-plan-switcher {
-    position: static;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
 }

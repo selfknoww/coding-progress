@@ -42,13 +42,14 @@ function ProblemCategory({
 }: ProblemCategoryProps) {
   const { optionKeys, getOption } = useProgressOptions();
   const { allProgress, updateProgress, removeProgress } = useQuestProgress();
+  const shouldShowHeadingProgress = level > 0 && data && data.length > 0;
 
   return (
     <div className={`pb-container level-${level} ${className}`}>
       {title && (
         <h3 className="title" id={`${hashCode(title || "")}`}>
           <span dangerouslySetInnerHTML={{ __html: title || "" }}></span>
-          {data && data.length > 0 ? (
+          {shouldShowHeadingProgress ? (
             <StudyPlanProgressBadge
               data={{ title, leafChild: [], nonLeafChild: data }}
               compact

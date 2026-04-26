@@ -49,3 +49,8 @@ test("dark mode does not use light summary panels", () => {
     /@include color-mode\(dark, false\)[\s\S]*\.summary\s*\{[\s\S]*background:\s*rgba\(251, 251, 251/
   );
 });
+
+test("root source heading does not render an aggregate progress badge", () => {
+  assert.match(categorySource, /level > 0/);
+  assert.doesNotMatch(categorySource, /data && data\.length > 0 \? \(/);
+});

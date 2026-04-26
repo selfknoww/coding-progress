@@ -48,9 +48,9 @@ test("home page is a grouped study plan dashboard", () => {
   assert.match(homeSource, /StudyPlanProgressBadge/);
 });
 
-test("list pages include a compact study plan switcher", () => {
-  assert.match(listPageSource, /StudyPlanSwitcher/);
-  assert.match(globalStyle, /\.study-plan-switcher/);
+test("list pages rely on the home dashboard for study plan switching", () => {
+  assert.doesNotMatch(listPageSource, /StudyPlanSwitcher/);
+  assert.doesNotMatch(globalStyle, /\.study-plan-switcher/);
 });
 
 test("study plan and category progress are displayed without new storage data", () => {

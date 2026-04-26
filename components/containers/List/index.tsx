@@ -62,6 +62,12 @@ export default function ({ data }: { data: ProblemCategory }) {
     }
   );
 
+  const sourceTitle = `<p class="fs-6 fw-bold fst-italic">来源:<a target="_blank" class="ms-2 fs-6 link" href="${data.original_src}">${data.original_src}</a>${
+    data["last_update"]
+      ? ` <span class="ms-3 fw-semibold fst-italic">最近更新: ${data["last_update"]}</span>`
+      : ""
+  }</p>`;
+
   const buttons = [
     {
       id: "move-to-top",
@@ -146,7 +152,7 @@ export default function ({ data }: { data: ProblemCategory }) {
         data-bs-target="#toc"
       >
         <ProblemCategory
-          title={`<p class="fs-6 fw-bold fst-italic">来源:<a target="_blank" class="ms-2 fs-6 link" href="${data.original_src}">${data.original_src}</a> <span class="ms-3 fw-semibold fst-italic">最近更新: ${data["last_update"]}</span></p>`}
+          title={sourceTitle}
           data={[data]}
           showEn={setting.showEn}
           showRating={setting.showRating}
