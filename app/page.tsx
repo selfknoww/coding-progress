@@ -56,8 +56,6 @@ export default function HomePage() {
         </section>
 
         <section className="dashboard-grid" aria-label="推荐题单">
-          <RecentActivity titleById={titleById} />
-
           <article className="dashboard-card primary">
             <div>
               <p className="eyebrow">课程路线</p>
@@ -88,6 +86,22 @@ export default function HomePage() {
 
           <article className="dashboard-card wide">
             <div>
+              <p className="eyebrow">分类训练</p>
+              <h2>0x3f 算法题单</h2>
+              <p>按算法专题拆分，适合系统训练滑动窗口、二分、图论、动态规划等能力。</p>
+            </div>
+            <div className="category-grid">
+              {ox3fPlans.map(([slug, plan]) => (
+                <Link key={slug} href={plan.href}>
+                  <span>{plan.title}</span>
+                  <StudyPlanProgressBadge data={plan.data} compact />
+                </Link>
+              ))}
+            </div>
+          </article>
+
+          <article className="dashboard-card wide">
+            <div>
               <p className="eyebrow">小红书整理</p>
               <h2>小红书高频题单</h2>
               <p>只保留两个入口：前四张图的方法总结，以及 Hot100 分类版。</p>
@@ -102,21 +116,7 @@ export default function HomePage() {
             </div>
           </article>
 
-          <article className="dashboard-card wide">
-            <div>
-              <p className="eyebrow">分类训练</p>
-              <h2>0x3f 算法题单</h2>
-              <p>按算法专题拆分，适合系统训练滑动窗口、二分、图论、动态规划等能力。</p>
-            </div>
-            <div className="category-grid">
-              {ox3fPlans.map(([slug, plan]) => (
-                <Link key={slug} href={plan.href}>
-                  <span>{plan.title}</span>
-                  <StudyPlanProgressBadge data={plan.data} compact />
-                </Link>
-              ))}
-            </div>
-          </article>
+          <RecentActivity titleById={titleById} />
         </section>
       </main>
     </>

@@ -62,6 +62,18 @@ test("home page shows recent AC activity like a commit list", () => {
   assert.match(globalStyle, /\.activity-group-title/);
 });
 
+test("home page puts category lists before xiaohongshu and activity", () => {
+  const categoryIndex = homeSource.indexOf("0x3f 算法题单");
+  const xiaohongshuIndex = homeSource.indexOf("小红书高频题单");
+  const activityIndex = homeSource.indexOf("<RecentActivity");
+
+  assert.ok(categoryIndex > -1);
+  assert.ok(xiaohongshuIndex > -1);
+  assert.ok(activityIndex > -1);
+  assert.ok(categoryIndex < xiaohongshuIndex);
+  assert.ok(xiaohongshuIndex < activityIndex);
+});
+
 test("list pages rely on the home dashboard for study plan switching", () => {
   assert.doesNotMatch(listPageSource, /StudyPlanSwitcher/);
   assert.doesNotMatch(globalStyle, /\.study-plan-switcher/);
