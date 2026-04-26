@@ -41,6 +41,42 @@ a:hover {
   gap: 0.5rem;
 }
 
+.top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.github-repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.35rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.65rem;
+  background: #050505;
+  color: #f8fafc;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.18);
+}
+
+.github-repo-link:hover {
+  color: #ffffff;
+  background: #111111;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.github-repo-link svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+}
+
 .top-nav .navbar-brand {
   letter-spacing: 0;
 }

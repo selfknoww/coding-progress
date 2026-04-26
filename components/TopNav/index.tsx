@@ -1,3 +1,4 @@
+import GitHubRepoLink from "@components/GitHubRepoLink";
 import ProgressBackup from "@components/ProgressBackup";
 import { studyPlans } from "@/config/studyPlans";
 import Link from "next/link";
@@ -11,7 +12,10 @@ export default function TopNav() {
             <Link className="navbar-brand fw-bold text-body" href="/">
               LC Coding
             </Link>
-            <ProgressBackup />
+            <div className="top-actions">
+              <ProgressBackup />
+              <GitHubRepoLink />
+            </div>
           </div>
           <nav className="d-flex flex-wrap gap-2 small">
             {Object.entries(studyPlans).map(([slug, plan]) => (
