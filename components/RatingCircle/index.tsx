@@ -26,7 +26,10 @@ export const ColorRating = React.memo(
     let c = COLORS.findIndex((v) => rating >= v.l && rating < v.r);
     const color = c >= 0 ? c : "-1";
     return (
-      <span {...props} className={clsx("ff-ht", `rating-color-${color}`)}>
+      <span
+        {...props}
+        className={clsx("ff-ht", `rating-color-${color}`, props.className)}
+      >
         {children}
       </span>
     );

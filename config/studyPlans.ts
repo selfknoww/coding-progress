@@ -5,6 +5,7 @@ import dynamicProgramming from "@components/containers/List/data/dynamic_program
 import graph from "@components/containers/List/data/graph";
 import greedy from "@components/containers/List/data/greedy";
 import grid from "@components/containers/List/data/grid";
+import hot100 from "@components/containers/List/data/hot_100";
 import math from "@components/containers/List/data/math";
 import monotonicStack from "@components/containers/List/data/monotonic_stack";
 import slidingWindow from "@components/containers/List/data/sliding_window";
@@ -12,6 +13,11 @@ import string from "@components/containers/List/data/string";
 import trees from "@components/containers/List/data/trees";
 
 export const studyPlans = {
+  hot_100: {
+    title: "Hot 100",
+    href: "/list/hot_100",
+    data: hot100,
+  },
   sliding_window: {
     title: "滑动窗口",
     href: "/list/sliding_window",

@@ -1,0 +1,99 @@
+[data-bs-theme] {
+  --rating-color-0: #848484;
+  --rating-color-1: #595959;
+  --rating-color-2: #4ba59e;
+  --rating-color-3: #1b01f5;
+  --rating-color-4: #9b1ea4;
+  --rating-color-5: #f09235;
+  --rating-color-6: #ea3323;
+  --rating-color-7: #ea3323;
+}
+
+[data-bs-theme="dark"] {
+  --rating-color-0: #c5c4c4;
+  --rating-color-1: #ffffff;
+  --rating-color-2: #74fff3;
+  --rating-color-3: #6857ff;
+  --rating-color-4: #ec60f6;
+  --rating-color-5: #f8a95b;
+  --rating-color-6: #f35041;
+  --rating-color-7: #f35041;
+}
+
+.rating-circle {
+  background: transparent;
+  display: inline-block;
+  height: 16px;
+  margin-right: 4px;
+  margin-top: 2px;
+  position: relative;
+  width: 16px;
+}
+
+.inner-circle {
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1.5px;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.inner-circle__plus {
+  background-color: red;
+  border-radius: 50%;
+  display: block;
+  height: 6px;
+  left: 5px;
+  position: absolute;
+  top: 5px;
+  width: 6px;
+}
+
+.ff-ht {
+  font-family: "黑体", "微软雅黑";
+}
+
+.rating-color-0,
+.rating-color-1,
+.rating-color-2,
+.rating-color-3,
+.rating-color-4,
+.rating-color-5,
+.rating-color-6,
+.rating-color-7 {
+  font-weight: bold;
+}
+
+.rating-color-0 {
+  color: var(--rating-color-0);
+}
+
+.rating-color-1 {
+  color: var(--rating-color-1);
+}
+
+.rating-color-2 {
+  color: var(--rating-color-2);
+}
+
+.rating-color-3 {
+  color: var(--rating-color-3);
+}
+
+.rating-color-4 {
+  color: var(--rating-color-4);
+}
+
+.rating-color-5 {
+  color: var(--rating-color-5);
+}
+
+.rating-color-6 {
+  color: var(--rating-color-6);
+}
+
+.rating-color-7 {
+  color: var(--rating-color-7);
+  font-weight: 900;
+}
