@@ -3,6 +3,7 @@
 import {
   DEFAULT_PROGRESS,
   importProgress,
+  importProgressUpdatedAt,
   serializeProgress,
 } from "@/src/progress.mjs";
 import { useQuestProgress } from "@hooks/useProgress";
@@ -11,7 +12,13 @@ import { Alert, Button } from "react-bootstrap";
 
 export default function ProgressBackup() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { allProgress, setAllProgress, removeProgress } = useQuestProgress();
+  const {
+    allProgress,
+    progressUpdatedAt,
+    setAllProgress,
+    setProgressUpdatedAt,
+    removeProgress,
+  } = useQuestProgress();
   const [message, setMessage] = useState<string>("");
   const [variant, setVariant] = useState<"success" | "danger" | "info">(
     "info"
@@ -26,7 +33,7 @@ export default function ProgressBackup() {
   };
 
   const handleExport = () => {
-    const content = serializeProgress(allProgress);
+    const content = serializeProgress(allProgress, progressUpdatedAt);
     const blob = new Blob([content], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const date = new Date().toISOString().slice(0, 10);
@@ -43,11 +50,15 @@ export default function ProgressBackup() {
     try {
       const text = await file.text();
       const progress = importProgress(text);
+      const updatedAt = importProgressUpdatedAt(text);
 
       Object.keys(allProgress).forEach((problemId) => {
         removeProgress(problemId);
       });
       setAllProgress(progress);
+      if (Object.keys(updatedAt).length > 0) {
+        setProgressUpdatedAt(updatedAt);
+      }
       showMessage(
         `已导入 ${Object.keys(progress).length} 条非待做进度。`,
         "success"

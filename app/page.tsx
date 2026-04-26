@@ -1,7 +1,28 @@
 import { studyPlans } from "@/config/studyPlans";
+import RecentActivity from "@components/RecentActivity";
 import StudyPlanProgressBadge from "@components/StudyPlanProgressBadge";
 import TopNav from "@components/TopNav";
+import { parseProblemId } from "@src/progress.mjs";
 import Link from "next/link";
+
+type ProblemCategoryNode = {
+  title?: string;
+  leafChild?: ProblemCategoryNode[];
+  nonLeafChild?: ProblemCategoryNode[];
+};
+
+const collectProblemTitles = (
+  node: ProblemCategoryNode,
+  titleById: Record<string, string>
+) => {
+  const id = parseProblemId(node.title || "");
+  if (/^\d+$/.test(id) && node.title) {
+    titleById[id] = node.title;
+  }
+
+  node.leafChild?.forEach((child) => collectProblemTitles(child, titleById));
+  node.nonLeafChild?.forEach((child) => collectProblemTitles(child, titleById));
+};
 
 export default function HomePage() {
   const basicAlgorithm = studyPlans.basic_algorithm;
@@ -17,6 +38,10 @@ export default function HomePage() {
       slug !== "hot_100" &&
       !slug.startsWith("xhs_")
   );
+  const titleById: Record<string, string> = {};
+  Object.values(studyPlans).forEach((plan) =>
+    collectProblemTitles(plan.data, titleById)
+  );
 
   return (
     <>
@@ -31,6 +56,8 @@ export default function HomePage() {
         </section>
 
         <section className="dashboard-grid" aria-label="推荐题单">
+          <RecentActivity titleById={titleById} />
+
           <article className="dashboard-card primary">
             <div>
               <p className="eyebrow">课程路线</p>

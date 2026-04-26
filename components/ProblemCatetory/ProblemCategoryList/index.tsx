@@ -7,7 +7,14 @@ import {
 } from "@hooks/useProgress";
 import { hashCode } from "@utils/hash";
 import { renderSummaryHtml } from "@src/summaryHtml.mjs";
-import Form from "react-bootstrap/esm/Form";
+import {
+  formatRelativeActivityTime,
+  getProblemUpdatedAt,
+} from "@src/progressActivity.mjs";
+import { useState } from "react";
+import Button from "react-bootstrap/esm/Button";
+import Dropdown from "react-bootstrap/esm/Dropdown";
+import Modal from "react-bootstrap/esm/Modal";
 
 const title2id = (title: string) => {
   // title: number. title
@@ -60,6 +67,7 @@ interface ProblemCategoryListProps {
   optionKeys: ProgressKeyType[];
   getOption: (key?: ProgressKeyType) => OptionEntry;
   allProgress: Record<string, ProgressKeyType>;
+  progressUpdatedAt: Record<string, string>;
   updateProgress: (questID: string, progress: ProgressKeyType) => void;
   removeProgress: (questID: string) => void;
   data: ProblemCategory;
@@ -72,6 +80,7 @@ function ProblemCategoryList({
   optionKeys,
   getOption,
   allProgress,
+  progressUpdatedAt,
   updateProgress,
   removeProgress,
   data,
@@ -79,16 +88,26 @@ function ProblemCategoryList({
   showRating,
   showPremium,
 }: ProblemCategoryListProps) {
-  // Event handlers
-  const handleProgressSelectChange = (
-    questID: string,
-    progress: ProgressKeyType
-  ) => {
-    if (progress === getOption().key) {
-      removeProgress(questID);
-    } else {
-      updateProgress(questID, progress);
+  const [pendingChange, setPendingChange] = useState<{
+    questID: string;
+    progress: ProgressKeyType;
+  } | null>(null);
+
+  const requestProgressChange = (questID: string, progress: ProgressKeyType) => {
+    setPendingChange({ questID, progress });
+  };
+
+  const confirmProgressChange = () => {
+    if (!pendingChange) {
+      return;
     }
+
+    if (pendingChange.progress === getOption().key) {
+      removeProgress(pendingChange.questID);
+    } else {
+      updateProgress(pendingChange.questID, pendingChange.progress);
+    }
+    setPendingChange(null);
   };
 
   const filteredChild = (data.leafChild || []).filter(
@@ -116,10 +135,15 @@ function ProblemCategoryList({
             const rating = Number(item.score);
             const englishHref = getEnglishHref(item);
             const solutionHref = getSolutionHref(item.solution);
+            const updatedAt = getProblemUpdatedAt(progressUpdatedAt, id);
+            const lastAcLabel = updatedAt
+              ? formatRelativeActivityTime(updatedAt)
+              : null;
 
             return (
               <li
                 data-todo={option.key === getOption().key}
+                data-status={option.key}
                 className="problem-row"
                 key={hashCode(item.title || "")}
               >
@@ -157,6 +181,14 @@ function ProblemCategoryList({
                   </span>
                 </div>
                 <div className="problem-meta">
+                  {option.key === "AC" && lastAcLabel && (
+                    <span
+                      className="last-ac-time"
+                      title={`Last AC ${lastAcLabel}`}
+                    >
+                      Last AC {lastAcLabel}
+                    </span>
+                  )}
                   {item.score && showRating ? (
                     <div className="pb-rating-bg">
                     <RatingCircle rating={rating} />
@@ -165,41 +197,67 @@ function ProblemCategoryList({
                     </ColorRating>
                     </div>
                   ) : null}
-                </div>
-                <div className="problem-progress">
-                  <Form.Select
-                    style={{
-                      color: option.color,
-                    }}
-                    value={option.key}
-                    onChange={(e) =>
-                      handleProgressSelectChange(id, e.target.value)
-                    }
-                  >
+                  <div className="problem-progress">
+                  <Dropdown align="end">
+                    <Dropdown.Toggle
+                      className="status-menu-toggle"
+                      style={{
+                        color: option.color,
+                      }}
+                      variant="outline-secondary"
+                    >
+                      {option.label || "Set"}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
                     {optionKeys.map((p) => (
-                      <option
+                      <Dropdown.Item
                         key={p}
-                        value={p}
+                        active={p === option.key}
+                        disabled={p === option.key}
+                        onClick={() => requestProgressChange(id, p)}
                         style={{ color: getOption(p).color }}
                       >
-                        {getOption(p).label}
-                      </option>
+                        {getOption(p).label || "待做"}
+                      </Dropdown.Item>
                     ))}
                     {optionKeys.indexOf(option.key) == -1 && (
-                      <option
+                      <Dropdown.Item
                         key={option.key}
-                        value={option.key}
+                        active
+                        onClick={() => requestProgressChange(id, option.key)}
                         style={{ color: option.color }}
                       >
                         {option.label}
-                      </option>
+                      </Dropdown.Item>
                     )}
-                  </Form.Select>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  </div>
                 </div>
               </li>
             );
           })}
       </ul>
+      <Modal
+        centered
+        show={Boolean(pendingChange)}
+        onHide={() => setPendingChange(null)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm status change</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          This will update the problem status and refresh its updated time.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-secondary" onClick={() => setPendingChange(null)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={confirmProgressChange}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </section>
   );
 }

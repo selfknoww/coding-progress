@@ -66,6 +66,18 @@ def solve():
 
 代码块必须尽量保持完整的 fenced code block。历史 v0 数据里有少量代码块被拆开，`src/summaryHtml.mjs` 做了兼容，但新增数据不要依赖这个兼容逻辑。
 
+## 本地进度数据
+
+题目状态保存在浏览器 `localStorage`，单题 key 仍沿用 `lc-rating-zen-progress-<题号>`。状态更新时间单独保存在 `lc-coding-progress-updated-at`，结构是 `{ [题号]: ISO时间 }`。
+
+导出 JSON 由 `src/progress.mjs` 的 `serializeProgress(progress, updatedAt)` 生成：
+
+- `progress` 只保存非 `TODO` 状态。
+- `updatedAt` 只保存当前 `progress` 中存在的题目，避免陈旧时间戳进入备份。
+- `importProgressUpdatedAt` 支持新版 `updatedAt`，也兼容旧的 `history`，会取每题最后一次状态变化时间。
+
+题目状态变更会刷新该题 `updatedAt`，所以 UI 里必须保留确认弹窗。首页最近 AC 统计、活动列表、题目行的 `Last AC ...` 都依赖这个字段。
+
 ## 修改后的验证
 
 修改题单数据或渲染逻辑后至少运行：

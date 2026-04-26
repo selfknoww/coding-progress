@@ -40,6 +40,34 @@ test("problem rows expose solution links when present", () => {
   assert.match(listSource, /题解/);
 });
 
+test("problem rows show the latest AC time from status updatedAt", () => {
+  assert.match(listSource, /progressUpdatedAt/);
+  assert.match(listSource, /getProblemUpdatedAt/);
+  assert.match(listSource, /Last AC/);
+  assert.match(categoryStyle, /\.last-ac-time/);
+});
+
+test("problem status changes require confirmation because they update time", () => {
+  assert.match(listSource, /pendingChange/);
+  assert.match(listSource, /confirmProgressChange/);
+  assert.match(listSource, /Confirm status change/);
+  assert.match(listSource, /refresh its updated time/);
+});
+
+test("problem status uses a compact menu instead of a full select", () => {
+  assert.match(listSource, /Dropdown/);
+  assert.match(listSource, /status-menu-toggle/);
+  assert.match(listSource, /Set/);
+  assert.match(listSource, /disabled=\{p === option\.key\}/);
+  assert.doesNotMatch(listSource, /<Form\.Select/);
+});
+
+test("accepted problem rows have a distinct visual state", () => {
+  assert.match(listSource, /data-status/);
+  assert.match(listSource, /option\.key/);
+  assert.match(categoryStyle, /data-status="AC"/);
+});
+
 test("dark mode does not use light summary panels", () => {
   assert.match(categoryStyle, /@include color-mode\(dark, false\)/);
   assert.match(categoryStyle, /\.summary\s*\{[\s\S]*background:\s*rgb\(26, 28, 31\)/);

@@ -41,7 +41,8 @@ function ProblemCategory({
   showPremium,
 }: ProblemCategoryProps) {
   const { optionKeys, getOption } = useProgressOptions();
-  const { allProgress, updateProgress, removeProgress } = useQuestProgress();
+  const { allProgress, progressUpdatedAt, updateProgress, removeProgress } =
+    useQuestProgress();
   const shouldShowHeadingProgress = level > 0 && data && data.length > 0;
 
   return (
@@ -77,6 +78,7 @@ function ProblemCategory({
                     optionKeys={optionKeys}
                     getOption={getOption}
                     allProgress={allProgress}
+                    progressUpdatedAt={progressUpdatedAt}
                     updateProgress={updateProgress}
                     removeProgress={removeProgress}
                     showEn={showEn}

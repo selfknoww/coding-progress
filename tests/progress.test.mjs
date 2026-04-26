@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import {
   DEFAULT_PROGRESS,
   exportProgress,
+  importProgressUpdatedAt,
   importProgress,
   parseProblemId,
   serializeProgress,
@@ -31,6 +32,41 @@ test("serializeProgress omits todo entries and stores metadata", () => {
   assert.equal(typeof parsed.exportedAt, "string");
 });
 
+test("serializeProgress can include status updated times", () => {
+  const json = serializeProgress(
+    { 70: "AC", 198: DEFAULT_PROGRESS },
+    {
+      70: "2026-04-26T12:00:00.000Z",
+      198: "2026-04-25T12:00:00.000Z",
+      999: "2026-04-24T12:00:00.000Z",
+    }
+  );
+  const parsed = JSON.parse(json);
+
+  assert.equal(parsed.version, 2);
+  assert.deepEqual(parsed.updatedAt, {
+    70: "2026-04-26T12:00:00.000Z",
+  });
+});
+
+test("importProgressUpdatedAt ignores timestamps outside current progress", () => {
+  assert.deepEqual(
+    importProgressUpdatedAt(
+      JSON.stringify({
+        version: 2,
+        progress: { 70: "AC" },
+        updatedAt: {
+          70: "2026-04-26T12:00:00.000Z",
+          999: "2026-04-25T12:00:00.000Z",
+        },
+      })
+    ),
+    {
+      70: "2026-04-26T12:00:00.000Z",
+    }
+  );
+});
+
 test("importProgress accepts current export format and legacy plain maps", () => {
   assert.deepEqual(
     importProgress(JSON.stringify({ version: 1, progress: { 70: "AC" } })),
@@ -39,6 +75,37 @@ test("importProgress accepts current export format and legacy plain maps", () =>
   assert.deepEqual(importProgress(JSON.stringify({ 198: "WORKING" })), {
     198: "WORKING",
   });
+});
+
+test("importProgressUpdatedAt accepts version 2 timestamps and legacy history", () => {
+  assert.deepEqual(
+    importProgressUpdatedAt(
+      JSON.stringify({
+        version: 2,
+        progress: { 70: "AC" },
+        updatedAt: {
+          70: "2026-04-26T12:00:00.000Z",
+        },
+      })
+    ),
+    {
+      70: "2026-04-26T12:00:00.000Z",
+    }
+  );
+  assert.deepEqual(
+    importProgressUpdatedAt(
+      JSON.stringify({
+        history: {
+          70: [
+            { from: DEFAULT_PROGRESS, to: "AC", at: "2026-04-20T12:00:00.000Z" },
+            { from: "AC", to: "REVIEW_NEEDED", at: "2026-04-21T12:00:00.000Z" },
+          ],
+        },
+      })
+    ),
+    { 70: "2026-04-21T12:00:00.000Z" }
+  );
+  assert.deepEqual(importProgressUpdatedAt(JSON.stringify({ 70: "AC" })), {});
 });
 
 test("importProgress rejects malformed JSON and invalid progress values", () => {

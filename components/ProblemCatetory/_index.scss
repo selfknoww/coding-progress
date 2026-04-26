@@ -225,9 +225,17 @@
             border-radius: .35rem;
             display: grid;
             gap: .75rem;
-            grid-template-columns: minmax(0, 1fr) 5.75rem 10rem;
+            grid-template-columns: minmax(0, 1fr) auto;
             min-height: 2.6rem;
             padding: .45rem .55rem;
+
+            &[data-status="AC"] {
+                background:
+                    linear-gradient(90deg, rgba(34, 197, 94, .12), rgba(255, 255, 255, .72) 32%),
+                    rgba(255, 255, 255, .72);
+                border-color: rgba(22, 163, 74, .24);
+                box-shadow: inset 3px 0 0 rgba(34, 197, 94, .78);
+            }
         }
 
         .problem-main {
@@ -250,6 +258,25 @@
             white-space: nowrap;
         }
 
+        .last-ac-time {
+            background: rgba(34, 197, 94, .1);
+            border: 1px solid rgba(34, 197, 94, .24);
+            border-radius: 999px;
+            color: rgb(22, 101, 52);
+            flex: 0 0 auto;
+            font-size: .72rem;
+            font-weight: 800;
+            line-height: 1;
+            padding: .18rem .45rem;
+            white-space: nowrap;
+
+            &.previous {
+                background: rgba(148, 163, 184, .12);
+                border-color: rgba(148, 163, 184, .28);
+                color: rgb(71, 85, 105);
+            }
+        }
+
         .solution-link {
             color: $blue;
             font-size: .82rem;
@@ -265,6 +292,7 @@
         .problem-meta {
             align-items: center;
             display: flex;
+            gap: .5rem;
             justify-content: flex-end;
             min-height: 1.25rem;
         }
@@ -272,9 +300,47 @@
         .problem-progress {
             min-width: 0;
 
-            .form-select {
-                min-height: 2.25rem;
-                width: 100%;
+            .dropdown {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .status-menu-toggle {
+                align-items: center;
+                background: rgba(148, 163, 184, .1);
+                border-color: rgba(148, 163, 184, .24);
+                border-radius: 999px;
+                display: inline-flex;
+                font-size: .82rem;
+                font-weight: 800;
+                gap: .35rem;
+                justify-content: center;
+                line-height: 1;
+                min-height: 1.7rem;
+                min-width: 4.4rem;
+                padding: .28rem .65rem;
+                width: auto;
+
+                &::after {
+                    margin-left: .15rem;
+                }
+            }
+
+            .dropdown-menu {
+                min-width: 10rem;
+            }
+        }
+
+        .problem-row[data-status="AC"] {
+            .problem-title {
+                color: rgb(22, 101, 52);
+            }
+
+            .status-menu-toggle {
+                background-color: rgba(34, 197, 94, .12);
+                border-color: rgba(34, 197, 94, .3);
+                box-shadow: 0 0 0 1px rgba(34, 197, 94, .08);
+                color: rgb(22, 101, 52) !important;
             }
         }
 
@@ -317,12 +383,12 @@
 
             .problem-meta {
                 justify-content: flex-start;
+                flex-wrap: wrap;
             }
 
             .problem-progress {
-                .form-select {
-                    max-width: 100%;
-                }
+                display: flex;
+                justify-content: flex-start;
             }
         }
     }
@@ -408,16 +474,63 @@
             .problem-row {
                 background: rgb(31, 33, 36);
                 border-color: rgba(255, 255, 255, .08);
+
+                &[data-status="AC"] {
+                    background:
+                        linear-gradient(90deg, rgba(34, 197, 94, .16), rgba(31, 33, 36, .98) 34%),
+                        rgb(31, 33, 36);
+                    border-color: rgba(34, 197, 94, .2);
+                    box-shadow: inset 3px 0 0 rgba(34, 197, 94, .82);
+                }
             }
 
             .solution-link {
                 color: rgb(96, 165, 250);
             }
 
-            .problem-progress .form-select {
+            .last-ac-time {
+                background: rgba(34, 197, 94, .14);
+                border-color: rgba(34, 197, 94, .28);
+                color: rgb(134, 239, 172);
+
+                &.previous {
+                    background: rgba(148, 163, 184, .12);
+                    border-color: rgba(148, 163, 184, .24);
+                    color: rgb(203, 213, 225);
+                }
+            }
+
+            .problem-progress .status-menu-toggle {
+                background-color: rgba(15, 23, 42, .68);
+                border-color: rgba(148, 163, 184, .28);
+                color: rgb(229, 231, 235);
+            }
+
+            .problem-row[data-status="AC"] {
+                .problem-title {
+                    color: rgb(220, 252, 231);
+                }
+
+                .status-menu-toggle {
+                    background-color: rgba(34, 197, 94, .14);
+                    border-color: rgba(34, 197, 94, .34);
+                    color: rgb(134, 239, 172) !important;
+                }
+            }
+
+            .problem-progress .dropdown-menu {
                 background-color: rgb(17, 24, 39);
                 border-color: rgba(148, 163, 184, .35);
+            }
+
+            .problem-progress .dropdown-item {
                 color: rgb(229, 231, 235);
+
+                &:hover,
+                &:focus,
+                &.active {
+                    background-color: rgba(96, 165, 250, .14);
+                }
             }
         }
     }

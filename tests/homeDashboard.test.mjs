@@ -19,6 +19,10 @@ const progressBadgeSource = readFileSync(
   new URL("../components/StudyPlanProgressBadge/index.tsx", import.meta.url),
   "utf8"
 );
+const recentActivitySource = readFileSync(
+  new URL("../components/RecentActivity/index.tsx", import.meta.url),
+  "utf8"
+);
 const categorySource = readFileSync(
   new URL("../components/ProblemCatetory/index.tsx", import.meta.url),
   "utf8"
@@ -46,6 +50,16 @@ test("home page is a grouped study plan dashboard", () => {
   assert.match(homeSource, /dashboard-card/);
   assert.match(homeSource, /category-grid/);
   assert.match(homeSource, /StudyPlanProgressBadge/);
+});
+
+test("home page shows recent AC activity like a commit list", () => {
+  assert.match(homeSource, /RecentActivity/);
+  assert.match(recentActivitySource, /Activity/);
+  assert.match(recentActivitySource, /Recent AC/);
+  assert.match(recentActivitySource, /groupActivitiesByDate/);
+  assert.match(recentActivitySource, /progressUpdatedAt/);
+  assert.match(globalStyle, /\.activity-card/);
+  assert.match(globalStyle, /\.activity-group-title/);
 });
 
 test("list pages rely on the home dashboard for study plan switching", () => {
