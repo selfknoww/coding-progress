@@ -1,5 +1,6 @@
 import { ShareIcon } from "@components/icons";
 import RatingCircle, { ColorRating } from "@components/RatingCircle";
+import StudyPlanProgressBadge from "@components/StudyPlanProgressBadge";
 import {
   OptionEntry,
   ProgressKeyType,
@@ -97,7 +98,8 @@ function ProblemCategoryList({
   return (
     <section className="leaf">
       <h3 className="title" id={`${hashCode(data.title || "")}`}>
-        {data.title}
+        <span>{data.title}</span>
+        <StudyPlanProgressBadge data={data} compact />
       </h3>
       {data.summary && (
         <div

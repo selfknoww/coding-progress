@@ -186,7 +186,11 @@
         width: 100%;
 
         h3.title {
+            align-items: center;
             color: $gray-900;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
             font-size: 1.15rem;
             font-weight: 800;
             line-height: 1.35;
@@ -279,7 +283,11 @@
     border-radius: 15px;
 
     .title {
+        align-items: center;
         color: $red;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem;
         font-weight: 700;
         line-height: 1.35;
         margin: 1rem 0 .55rem;

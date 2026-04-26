@@ -1,5 +1,6 @@
 import { hashCode } from "@utils/hash";
 import ProblemCategoryList from "./ProblemCategoryList";
+import StudyPlanProgressBadge from "@components/StudyPlanProgressBadge";
 import { useProgressOptions, useQuestProgress } from "@hooks/useProgress";
 import { renderSummaryHtml } from "@src/summaryHtml.mjs";
 
@@ -47,6 +48,12 @@ function ProblemCategory({
       {title && (
         <h3 className="title" id={`${hashCode(title || "")}`}>
           <span dangerouslySetInnerHTML={{ __html: title || "" }}></span>
+          {data && data.length > 0 ? (
+            <StudyPlanProgressBadge
+              data={{ title, leafChild: [], nonLeafChild: data }}
+              compact
+            />
+          ) : null}
         </h3>
       )}
       {summary && (

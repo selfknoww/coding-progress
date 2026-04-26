@@ -1,5 +1,6 @@
 import { studyPlans, StudyPlanSlug } from "@/config/studyPlans";
 import List from "@components/containers/List";
+import StudyPlanSwitcher from "@components/StudyPlanSwitcher";
 import TopNav from "@components/TopNav";
 import { notFound } from "next/navigation";
 
@@ -21,6 +22,7 @@ export default function StudyPlanPage({
   return (
     <>
       <TopNav />
+      <StudyPlanSwitcher currentSlug={params.slug} />
       <List data={plan.data} />
     </>
   );
