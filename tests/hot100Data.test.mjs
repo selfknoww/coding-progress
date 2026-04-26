@@ -25,3 +25,9 @@ test("hot 100 is registered as a study plan", () => {
   assert.match(studyPlansSource, /hot_100:\s*{/);
   assert.match(studyPlansSource, /href:\s*"\/list\/hot_100"/);
 });
+
+test("hot 100 keeps available zerotrac ratings", () => {
+  assert.match(hot100Source, /"763": 1443\.0697629277/);
+  assert.match(hot100Source, /"994": 1432\.9051050881/);
+  assert.match(hot100Source, /score:\s*HOT_100_RATINGS\[id\] \?\? null/);
+});

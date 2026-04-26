@@ -1,3 +1,8 @@
+const HOT_100_RATINGS: Record<string, number> = {
+  "763": 1443.0697629277,
+  "994": 1432.9051050881,
+};
+
 const problem = (
   id: string,
   title: string,
@@ -11,7 +16,7 @@ const problem = (
   sort: 0,
   isLeaf: true,
   solution: null,
-  score: null,
+  score: HOT_100_RATINGS[id] ?? null,
   leafChild: [],
   nonLeafChild: [],
   isPremium,
