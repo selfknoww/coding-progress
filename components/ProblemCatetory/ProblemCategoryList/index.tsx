@@ -3,27 +3,41 @@ import RatingCircle, { ColorRating } from "@components/RatingCircle";
 import {
   OptionEntry,
   ProgressKeyType,
-  useProgressOptions,
-  useQuestProgress,
 } from "@hooks/useProgress";
-import useStorage from "@hooks/useStorage";
 import { hashCode } from "@utils/hash";
 import { renderSummaryHtml } from "@src/summaryHtml.mjs";
 import Form from "react-bootstrap/esm/Form";
 
-const getCols = (l: number) => {
-  if (l < 12) {
-    return "";
-  }
-  if (l < 20) {
-    return "col2";
-  }
-  return "col3";
-};
-
 const title2id = (title: string) => {
   // title: number. title
   return title.split(". ")[0];
+};
+
+const getProblemHref = (item: ProblemCategory) => {
+  if (item.original_src) {
+    return item.original_src;
+  }
+  if (item.src) {
+    return "https://leetcode.cn/problems" + item.src;
+  }
+  return "#";
+};
+
+const getEnglishHref = (item: ProblemCategory) => {
+  if (!item.src) {
+    return null;
+  }
+  return "https://leetcode.com/problems" + item.src;
+};
+
+const getSolutionHref = (solution?: string | null) => {
+  if (!solution) {
+    return null;
+  }
+  if (solution.startsWith("http")) {
+    return solution;
+  }
+  return `https://leetcode.cn${solution.startsWith("/") ? solution : `/${solution}`}`;
 };
 
 interface ProblemCategory {
@@ -81,56 +95,76 @@ function ProblemCategoryList({
   );
 
   return (
-    <div className="shadow rounded p-2 leaf">
+    <section className="leaf">
       <h3 className="title" id={`${hashCode(data.title || "")}`}>
         {data.title}
       </h3>
       {data.summary && (
         <div
-          className="p-2 rounded summary bg-secondary-subtle text-warning-emphasis"
+          className="summary"
           dangerouslySetInnerHTML={{ __html: renderSummaryHtml(data.summary) }}
         ></div>
       )}
-      <ul className={`list p-2 ${getCols(filteredChild.length)}`}>
+      <ul className="list">
         {filteredChild &&
           filteredChild.map((item) => {
             const id = title2id(item.title);
             const progressKey = allProgress[id];
             const option = getOption(progressKey);
             const rating = Number(item.score);
+            const englishHref = getEnglishHref(item);
+            const solutionHref = getSolutionHref(item.solution);
 
             return (
               <li
                 data-todo={option.key === getOption().key}
-                className="d-flex justify-content-between"
+                className="problem-row"
                 key={hashCode(item.title || "")}
               >
-                <div>
+                <div className="problem-main">
                   <a
-                    href={"https://leetcode.cn/problems" + item.src}
+                    className="problem-title"
+                    href={getProblemHref(item)}
                     target="_blank"
+                    rel="noreferrer"
                   >
                     {item.title + (item.isPremium ? " (会员题)" : "")}
                   </a>
-                  {showEn && (
-                    <a
-                      className="ms-2"
-                      href={"https://leetcode.com/problems" + item.src}
-                      target="_blank"
-                    >
-                      <ShareIcon height={16} width={16} />
-                    </a>
-                  )}
+                  <span className="problem-links">
+                    {solutionHref && (
+                      <a
+                        className="solution-link"
+                        href={solutionHref}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        题解
+                      </a>
+                    )}
+                    {showEn && englishHref && (
+                      <a
+                        className="english-link"
+                        href={englishHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="英文题面"
+                      >
+                        <ShareIcon height={16} width={16} />
+                      </a>
+                    )}
+                  </span>
                 </div>
-                {item.score && showRating ? (
-                  <div className="ms-2 text-nowrap d-flex justify-content-center align-items-center pb-rating-bg">
+                <div className="problem-meta">
+                  {item.score && showRating ? (
+                    <div className="pb-rating-bg">
                     <RatingCircle rating={rating} />
                     <ColorRating className="rating-text" rating={rating}>
                       {rating.toFixed(0)}
                     </ColorRating>
-                  </div>
-                ) : null}
-                <div className="d-flex align-items-center ms-2">
+                    </div>
+                  ) : null}
+                </div>
+                <div className="problem-progress">
                   <Form.Select
                     style={{
                       color: option.color,
@@ -164,7 +198,7 @@ function ProblemCategoryList({
             );
           })}
       </ul>
-    </div>
+    </section>
   );
 }
 

@@ -43,37 +43,39 @@ function ProblemCategory({
   const { allProgress, updateProgress, removeProgress } = useQuestProgress();
 
   return (
-    <div className={`pb-container level-${level}` + className}>
-      {
-        <h3 className="title p-2 text-danger" id={`${hashCode(title || "")}`}>
-          <p dangerouslySetInnerHTML={{ __html: title || "" }}></p>
+    <div className={`pb-container level-${level} ${className}`}>
+      {title && (
+        <h3 className="title" id={`${hashCode(title || "")}`}>
+          <span dangerouslySetInnerHTML={{ __html: title || "" }}></span>
         </h3>
-      }
+      )}
       {summary && (
         <div
-          className="d-inline-block p-2 mb-2 rounded summary bg-secondary-subtle text-warning-emphasis"
+          className="summary"
           dangerouslySetInnerHTML={{ __html: renderSummaryHtml(summary) }}
         ></div>
       )}
-      <div className={`level-${level}`}>
+      <div className={`pb-children level-${level}`}>
         {data &&
           data.map((item) => {
-            let summary = item.leafChild.length == 0 ? item.summary : "";
-            let title = item.leafChild.length == 0 ? item.title : "";
+            const leafChild = item.leafChild || [];
+            const nonLeafChild = item.nonLeafChild || [];
+            let summary = leafChild.length == 0 ? item.summary : "";
+            let title = leafChild.length == 0 ? item.title : "";
             return (
-              <div key={hashCode(item.title || "") + "head"}>
-                {item.leafChild.length > 0 ? (
+              <div className="pb-node" key={hashCode(item.title || "") + "head"}>
+                {leafChild.length > 0 ? (
                   <ProblemCategoryList
-                  optionKeys={optionKeys}
-                  getOption={getOption}
-                  allProgress={allProgress}
-                  updateProgress={updateProgress}
-                  removeProgress={removeProgress}
-                  showEn={showEn}
-                  showRating={showRating}
-                  showPremium={showPremium}
-                  data={item}
-                  key={hashCode(item.title || "") + "leaf"}
+                    optionKeys={optionKeys}
+                    getOption={getOption}
+                    allProgress={allProgress}
+                    updateProgress={updateProgress}
+                    removeProgress={removeProgress}
+                    showEn={showEn}
+                    showRating={showRating}
+                    showPremium={showPremium}
+                    data={item}
+                    key={hashCode(item.title || "") + "leaf"}
                   />
                 ) : <></>}
                 <ProblemCategory
@@ -82,14 +84,14 @@ function ProblemCategory({
                   showPremium={showPremium}
                   level={level + 1}
                   title={title}
-                  data={item.nonLeafChild}
+                  data={nonLeafChild}
                   summary={summary}
                   key={hashCode(item.title || "") + "nonLeaf"}
                 />
               </div>
             );
           })}
-      </div >
+      </div>
     </div>
   );
 }

@@ -13,11 +13,13 @@
         a {
             display: flex;
             width: 100%;
-            font-size: 1.2rem;
+            border-radius: .25rem;
+            font-size: .95rem;
+            line-height: 1.45;
+            padding: .1rem .25rem;
             text-decoration: none;
             &:hover {
-                background: rgb(235, 238, 240);
-                padding-left: .2rem;
+                background: rgba(235, 238, 240, .16);
             }
         }
     }
@@ -32,11 +34,17 @@
 }
 
 .pb-container {
+    display: block;
     gap: 1rem;
+    max-width: 100%;
+    min-width: 0;
 
     .pb-rating-bg {
-        // border-radius: 16px;
-        // padding: 0 2px 0 2px;
+        align-items: center;
+        display: inline-flex;
+        justify-content: flex-end;
+        min-width: 4.75rem;
+
         .rating-text {
             font-family: '黑体', '微软雅黑';
             font-weight: 900;
@@ -45,11 +53,21 @@
         }
     }
     .summary {
-        background: rgb(251, 251, 251);
+        background: rgba(251, 251, 251, .92);
+        border: 1px solid rgba(0, 0, 0, .08);
+        border-radius: .5rem;
+        display: block;
         font-weight: 600;
         line-height: 1.7;
+        margin: .25rem 0 .75rem;
+        max-width: 100%;
+        padding: .65rem .8rem;
+        width: 100%;
         a {
+            display: inline-flex;
+            max-width: 100%;
             text-decoration: underline!important;
+            overflow-wrap: anywhere;
         }
         img {
             max-width: 400px!important;
@@ -131,54 +149,58 @@
 
         &>.title {
             color: $gray-900!important;
+            font-size: .95rem;
         }
     }
 
-    .level-3 {
-        h3 > p {
-            font-weight: 900;
-        }
+    &.level-1 > .title {
+        font-size: 1.55rem;
     }
 
-    .level-2,
-    .level-4 {
-        display: flex;
-        flex-flow: row wrap;
-        gap: 1rem;
-        background: transparent;
+    &.level-2 > .title {
+        font-size: 1.35rem;
+    }
+
+    &.level-3 > .title,
+    &.level-4 > .title {
+        font-size: 1.15rem;
+    }
+
+    .pb-children {
+        display: grid;
+        gap: .85rem;
+        min-width: 0;
+    }
+
+    .pb-node {
+        min-width: 0;
     }
 
     .leaf {
-        background: rgb(244, 242, 242);
-        h3 {
+        background: rgba(244, 242, 242, .95);
+        border: 1px solid rgba(0, 0, 0, .08);
+        border-radius: .5rem;
+        box-shadow: 0 .35rem 1rem rgba(0, 0, 0, .08);
+        margin: .2rem 0 .8rem;
+        padding: .75rem;
+        width: 100%;
+
+        h3.title {
+            color: $gray-900;
+            font-size: 1.15rem;
             font-weight: 800;
+            line-height: 1.35;
+            margin: 0 0 .6rem;
         }
+
         .list {
-            background: rgb(251, 236, 209);
+            background: transparent;
+            display: grid;
+            gap: .4rem;
             list-style: none;
+            margin: 0;
             max-width: 100%;
-            margin-block-end: 0;
-
-            li:nth-child(n) {
-                margin-bottom: .2rem;
-            }
-
-            li:last-child {
-                margin-bottom: 0;
-            }
-
-            &.col2,
-            &.col3 {
-                columns: 2;
-                column-rule-width: 2px;
-                column-rule-color: rgb(107, 107, 107);
-                column-gap: 1cm;
-                column-rule-style: dashed;
-            }
-
-            &.col3 {
-                columns: 3;
-            }
+            padding: 0;
         }
 
         a {
@@ -192,12 +214,76 @@
             width: 100%;
         }
 
+        .problem-row {
+            align-items: center;
+            background: rgba(255, 255, 255, .72);
+            border: 1px solid rgba(0, 0, 0, .08);
+            border-radius: .35rem;
+            display: grid;
+            gap: .75rem;
+            grid-template-columns: minmax(0, 1fr) 5.75rem 10rem;
+            min-height: 2.6rem;
+            padding: .45rem .55rem;
+        }
+
+        .problem-main {
+            align-items: center;
+            display: flex;
+            gap: .45rem;
+            min-width: 0;
+        }
+
+        .problem-title {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .problem-links {
+            align-items: center;
+            display: inline-flex;
+            flex: 0 0 auto;
+            gap: .4rem;
+            white-space: nowrap;
+        }
+
+        .solution-link {
+            color: $blue;
+            font-size: .82rem;
+            font-weight: 700;
+            text-decoration-thickness: 1px;
+        }
+
+        .english-link {
+            align-items: center;
+            display: inline-flex;
+        }
+
+        .problem-meta {
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+            min-height: 1.25rem;
+        }
+
+        .problem-progress {
+            min-width: 0;
+
+            .form-select {
+                min-height: 2.25rem;
+                width: 100%;
+            }
+        }
+
     }
 
     border-radius: 15px;
 
     .title {
-        color: aliceblue;
+        color: $red;
+        font-weight: 700;
+        line-height: 1.35;
+        margin: 1rem 0 .55rem;
+        padding: 0;
     }
 }
 
@@ -209,11 +295,25 @@
         min-width: 100%;
 
         .leaf {
-            .list {
+            padding: .65rem;
 
-                &.col2,
-                &.col3 {
-                    columns: unset;
+            .problem-row {
+                grid-template-columns: minmax(0, 1fr);
+                gap: .45rem;
+            }
+
+            .problem-main {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .problem-meta {
+                justify-content: flex-start;
+            }
+
+            .problem-progress {
+                .form-select {
+                    max-width: 100%;
                 }
             }
         }
@@ -236,23 +336,34 @@
         li {
             a {
                 &:hover {
-                    background: white;
-                    padding-left: .2rem;
+                    background: rgba(255, 255, 255, .08);
                 }
             }
         }
     }
     .pb-container {
-        background: rgb(36, 36, 36);
+        background: transparent;
         .summary {
+            background: rgb(26, 28, 31);
+            border-color: rgba(255, 255, 255, .1);
+            color: rgb(229, 231, 235);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03);
+
             a {
-                color: $blue;
+                color: rgb(96, 165, 250);
             }
             blockquote {
                 border-left-color: rgba(255, 255, 255, .3);
+                color: rgb(209, 213, 219);
+            }
+            pre {
+                background: rgb(10, 10, 10);
+                border-color: rgba(255, 255, 255, .12);
+                color: rgb(244, 211, 94);
             }
             :not(pre) > code {
-                background: rgba(255, 255, 255, .1);
+                background: rgba(255, 255, 255, .09);
+                color: rgb(250, 204, 21);
             }
             th,
             td {
@@ -264,25 +375,46 @@
             border-radius: 0;
 
             &>.title {
-                color: white !important;
+                color: rgb(229, 231, 235) !important;
             }
         }
 
         .leaf {
-            background: rgb(30, 29, 29);
+            background: rgb(24, 24, 27);
+            border-color: rgba(255, 255, 255, .1);
+            box-shadow: 0 .5rem 1.25rem rgba(0, 0, 0, .22);
+
+            h3.title {
+                color: rgb(243, 244, 246);
+            }
 
             a {
-                color: white;
+                color: rgb(243, 244, 246);
             }
 
             .list {
-                background: rgb(43, 43, 43);
-                color: white;
+                background: transparent;
+                color: rgb(229, 231, 235);
+            }
+
+            .problem-row {
+                background: rgb(31, 33, 36);
+                border-color: rgba(255, 255, 255, .08);
+            }
+
+            .solution-link {
+                color: rgb(96, 165, 250);
+            }
+
+            .problem-progress .form-select {
+                background-color: rgb(17, 24, 39);
+                border-color: rgba(148, 163, 184, .35);
+                color: rgb(229, 231, 235);
             }
         }
     }
 
     .title {
-        color: white;
+        color: rgb(248, 113, 113);
     }
 }
