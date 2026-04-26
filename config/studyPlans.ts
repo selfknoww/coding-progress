@@ -1,4 +1,5 @@
 import binarySearch from "@components/containers/List/data/binary_search";
+import basicAlgorithm from "@components/containers/List/data/basic_algorithm";
 import bitwiseOperations from "@components/containers/List/data/bitwise_operations";
 import dataStructure from "@components/containers/List/data/data_structure";
 import dynamicProgramming from "@components/containers/List/data/dynamic_programming";
@@ -13,6 +14,11 @@ import string from "@components/containers/List/data/string";
 import trees from "@components/containers/List/data/trees";
 
 export const studyPlans = {
+  basic_algorithm: {
+    title: "基础算法精讲",
+    href: "/list/basic_algorithm",
+    data: basicAlgorithm,
+  },
   hot_100: {
     title: "Hot 100",
     href: "/list/hot_100",
