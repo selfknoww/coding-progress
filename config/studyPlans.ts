@@ -12,6 +12,8 @@ import monotonicStack from "@components/containers/List/data/monotonic_stack";
 import slidingWindow from "@components/containers/List/data/sliding_window";
 import string from "@components/containers/List/data/string";
 import trees from "@components/containers/List/data/trees";
+import xiaohongshuCurated from "@components/containers/List/data/xiaohongshu_curated";
+import xiaohongshuHot40 from "@components/containers/List/data/xiaohongshu_hot_40";
 
 export const studyPlans = {
   basic_algorithm: {
@@ -23,6 +25,16 @@ export const studyPlans = {
     title: "Hot 100",
     href: "/list/hot_100",
     data: hot100,
+  },
+  xhs_curated: {
+    title: "小红书精选讲解",
+    href: "/list/xhs_curated",
+    data: xiaohongshuCurated,
+  },
+  xhs_hot_40: {
+    title: "小红书 Hot100 分类",
+    href: "/list/xhs_hot_40",
+    data: xiaohongshuHot40,
   },
   sliding_window: {
     title: "滑动窗口",

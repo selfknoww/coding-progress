@@ -6,8 +6,16 @@ import Link from "next/link";
 export default function HomePage() {
   const basicAlgorithm = studyPlans.basic_algorithm;
   const hot100 = studyPlans.hot_100;
+  const xhsPlanSlugs = [
+    "xhs_curated",
+    "xhs_hot_40",
+  ] as const;
+  const xhsPlans = xhsPlanSlugs.map((slug) => [slug, studyPlans[slug]] as const);
   const ox3fPlans = Object.entries(studyPlans).filter(
-    ([slug]) => slug !== "basic_algorithm" && slug !== "hot_100"
+    ([slug]) =>
+      slug !== "basic_algorithm" &&
+      slug !== "hot_100" &&
+      !slug.startsWith("xhs_")
   );
 
   return (
@@ -49,6 +57,22 @@ export default function HomePage() {
             <Link className="dashboard-action" href={hot100.href}>
               进入{hot100.title}
             </Link>
+          </article>
+
+          <article className="dashboard-card wide">
+            <div>
+              <p className="eyebrow">小红书整理</p>
+              <h2>小红书高频题单</h2>
+              <p>只保留两个入口：前四张图的方法总结，以及 Hot100 分类版。</p>
+            </div>
+            <div className="category-grid xiaohongshu">
+              {xhsPlans.map(([slug, plan]) => (
+                <Link key={slug} href={plan.href}>
+                  <span>{plan.title}</span>
+                  <StudyPlanProgressBadge data={plan.data} compact />
+                </Link>
+              ))}
+            </div>
           </article>
 
           <article className="dashboard-card wide">
