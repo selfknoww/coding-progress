@@ -30,6 +30,7 @@ export default function HomePage() {
   const xhsPlanSlugs = [
     "xhs_curated",
     "xhs_hot_40",
+    "xhs_bytedance_algo",
   ] as const;
   const xhsPlans = xhsPlanSlugs.map((slug) => [slug, studyPlans[slug]] as const);
   const ox3fPlans = Object.entries(studyPlans).filter(

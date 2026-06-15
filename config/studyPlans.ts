@@ -1,6 +1,7 @@
 import binarySearch from "@components/containers/List/data/binary_search";
 import basicAlgorithm from "@components/containers/List/data/basic_algorithm";
 import bitwiseOperations from "@components/containers/List/data/bitwise_operations";
+import bytedanceAlgo from "@components/containers/List/data/bytedance_algo";
 import dataStructure from "@components/containers/List/data/data_structure";
 import dynamicProgramming from "@components/containers/List/data/dynamic_programming";
 import graph from "@components/containers/List/data/graph";
@@ -16,6 +17,11 @@ import xiaohongshuCurated from "@components/containers/List/data/xiaohongshu_cur
 import xiaohongshuHot40 from "@components/containers/List/data/xiaohongshu_hot_40";
 
 export const studyPlans = {
+  xhs_bytedance_algo: {
+    title: "字节跳动算法面经",
+    href: "/list/xhs_bytedance_algo",
+    data: bytedanceAlgo,
+  },
   basic_algorithm: {
     title: "基础算法精讲",
     href: "/list/basic_algorithm",
